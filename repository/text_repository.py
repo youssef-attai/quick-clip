@@ -1,3 +1,4 @@
+import os
 import sqlite3
 
 import res.strings
@@ -6,7 +7,11 @@ from model.text import Text
 
 class TextRepository:
     def __init__(self) -> None:
-        self.connection = sqlite3.connect(res.strings.DATABASE_PATH)
+        try:
+            self.connection = sqlite3.connect(res.strings.DATABASE_DIR)
+        except sqlite3.OperationalError:
+            os.makedirs(res.strings.APPDATA_DIR)
+            self.connection = sqlite3.connect(res.strings.DATABASE_DIR)
         self.cursor = self.connection.cursor()
 
         try:
