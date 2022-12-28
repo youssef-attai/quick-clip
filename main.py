@@ -11,7 +11,7 @@ try:
     # Only exists on Windows.
     from ctypes import windll
 
-    windll.shell32.SetCurrentProcessExplicitAppUserModelID('com.attai.youssef.quickclipboard')
+    windll.shell32.SetCurrentProcessExplicitAppUserModelID(res.strings.APP_ID)
 except ImportError:
     pass
 
