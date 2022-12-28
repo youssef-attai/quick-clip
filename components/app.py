@@ -33,17 +33,25 @@ class App(QApplication):
         self.menu.clear()
 
         texts = self.repository.get_all_texts()
-        actions = []
 
         for item in texts:
             action = self.menu.addAction(item.title)
             action.triggered.connect(partial(lambda tc: self.clipboard().setText(tc), item.content))
 
-        self.menu.addActions(actions)
         self.menu.addSeparator()
 
         new_text_action = self.menu.addAction("Add new text")
         new_text_action.triggered.connect(lambda: self.add_new_text())
 
+        delete_text_menu = self.menu.addMenu("Delete text")
+
+        for item in texts:
+            action = delete_text_menu.addAction(item.title)
+            action.triggered.connect(partial(lambda tt: self.remove_text(tt), item.title))
+
         quit_action = self.menu.addAction("Quit")
         quit_action.triggered.connect(lambda: sys.exit())
+
+    def remove_text(self, title):
+        self.repository.remove_text(title)
+        self.recreate_menu()

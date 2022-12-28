@@ -26,3 +26,7 @@ class TextRepository:
         self.cursor.execute("""SELECT * FROM texts""")
         texts = self.cursor.fetchall()
         return [Text.from_tuple(t) for t in texts]
+
+    def remove_text(self, title: str) -> None:
+        self.cursor.execute("""DELETE FROM texts WHERE title=?""", (title,))
+        self.connection.commit()
