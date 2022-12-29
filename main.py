@@ -2,10 +2,10 @@ import sys
 
 from PySide6.QtWidgets import QSystemTrayIcon
 
-
 import res.strings
 from components.app import App
-from repository.text_repository import TextRepository
+from components.database_connection import DatabaseConnection
+from repository.text.text_repository import TextRepository
 
 try:
     # Only exists on Windows.
@@ -16,7 +16,8 @@ except ImportError:
     pass
 
 if __name__ == '__main__':
-    text_repo = TextRepository()
+    db = DatabaseConnection("texts.db")
+    text_repo = TextRepository(db)
     app = App(sys.argv, text_repo)
 
     tray_icon = QSystemTrayIcon(app.icon)
