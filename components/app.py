@@ -13,6 +13,7 @@ class App(QApplication):
     def __init__(self, argv, repository):
         super().__init__(argv)
         self.text_repository = repository
+        print(res.strings.ICON_PATH)
         self.icon = QIcon(res.strings.ICON_PATH)
         self.setWindowIcon(self.icon)
         self.setApplicationName(res.strings.APP_NAME)
