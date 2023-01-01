@@ -3,13 +3,12 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <filesystem>
-#include <pwd.h>
+#include <sstream>
+#include <shlobj.h>
 #include "App.h"
 
 
 QString pathInAppDataDir(const QString &filename);
-
-QString pathInIconsDir(const QString &filename);
 
 QString appDataDir();
 
@@ -32,36 +31,44 @@ int main(int argc, char *argv[]) {
     App app(argc, argv, &textRepository);
     App::setQuitOnLastWindowClosed(false);
 
-    QIcon icon(pathInIconsDir("clipboard.png"));
+    QIcon icon(":/imgs/clipboard.png");
     App::setWindowIcon(icon);
     
     QMenu menu;
     app.setMenu(&menu);
 
-    QSystemTrayIcon trayIcon(&app);
+    QSystemTrayIcon trayIcon(icon, &app);
     trayIcon.setContextMenu(&menu);
-    trayIcon.setIcon(icon);
-    trayIcon.setVisible(true);
+    trayIcon.show();
 
     app.refreshMenu();
 
     return QApplication::exec();
 }
 
+std::string utf16ToUtf8(const std::wstring& utf16Str)
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
+    return conv.to_bytes(utf16Str);
+}
+
 QString homeDir() {
-    struct passwd *pw = getpwuid(getuid());
-    const char *homedir = pw->pw_dir;
-    return {homedir};
+    // Fetch Local App Data folder path.
+    wchar_t* localAppData = 0;
+    SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &localAppData);
+
+    std::wstringstream ss;
+    ss << localAppData;
+
+    CoTaskMemFree(static_cast<void*>(localAppData));
+    return {utf16ToUtf8(ss.str()).c_str()};
 }
 
 QString appDataDir() {
-    return homeDir() + "/.local/share/quickclipboard_test/";
+    qInfo() << homeDir();
+    return homeDir() + "/quickclipboard/";
 }
 
 QString pathInAppDataDir(const QString &filename) {
     return appDataDir() + filename;
-}
-
-QString pathInIconsDir(const QString &filename) {
-    return homeDir() + "/.icons/" + filename;
 }

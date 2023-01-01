@@ -14,7 +14,9 @@ find_package(Qt6 COMPONENTS
         Sql
         REQUIRED)
 
-add_executable(quickclipboard main.cpp TextRepository.h Text.h TextRepository.cpp App.cpp App.h AddNewTextDialog.cpp AddNewTextDialog.h)
+enable_language("RC")
+set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/quickclipboard.rc")
+add_executable(quickclipboard WIN32 main.cpp imgs.qrc TextRepository.h Text.h TextRepository.cpp App.cpp App.h AddNewTextDialog.cpp AddNewTextDialog.h ${app_icon_resource_windows})
 
 target_link_libraries(quickclipboard
         Qt::Core
