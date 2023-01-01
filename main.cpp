@@ -9,8 +9,6 @@
 
 QString pathInAppDataDir(const QString &filename);
 
-QString pathInIconsDir(const QString &filename);
-
 QString appDataDir();
 
 QString homeDir();
@@ -32,7 +30,7 @@ int main(int argc, char *argv[]) {
     App app(argc, argv, &textRepository);
     App::setQuitOnLastWindowClosed(false);
 
-    QIcon icon(pathInIconsDir("clipboard.png"));
+    QIcon icon(":/imgs/clipboard.png");
     App::setWindowIcon(icon);
     
     QMenu menu;
@@ -55,13 +53,9 @@ QString homeDir() {
 }
 
 QString appDataDir() {
-    return homeDir() + "/.local/share/quickclipboard_test/";
+    return homeDir() + "/.local/share/quickclipboard/";
 }
 
 QString pathInAppDataDir(const QString &filename) {
     return appDataDir() + filename;
-}
-
-QString pathInIconsDir(const QString &filename) {
-    return homeDir() + "/.icons/" + filename;
 }
