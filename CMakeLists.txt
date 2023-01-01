@@ -14,8 +14,7 @@ find_package(Qt6 COMPONENTS
         Sql
         REQUIRED)
 
-add_executable(quickclipboard main.cpp TextRepository.h Text.h TextRepository.cpp App.cpp App.h AddNewTextDialog.cpp AddNewTextDialog.h)
-
+add_executable(quickclipboard main.cpp imgs.qrc TextRepository.h Text.h TextRepository.cpp App.cpp App.h AddNewTextDialog.cpp AddNewTextDialog.h)
 target_link_libraries(quickclipboard
         Qt::Core
         Qt::Widgets
