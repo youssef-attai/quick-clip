@@ -9,7 +9,11 @@
 
 QString pathInAppDataDir(const QString &filename);
 
+QString pathInIconsDir(const QString &filename);
+
 QString appDataDir();
+
+QString homeDir();
 
 int main(int argc, char *argv[]) {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
@@ -28,8 +32,9 @@ int main(int argc, char *argv[]) {
     App app(argc, argv, &textRepository);
     App::setQuitOnLastWindowClosed(false);
 
-    QIcon icon("../clipboard.png");
-
+    QIcon icon(pathInIconsDir("clipboard.png"));
+    App::setWindowIcon(icon);
+    
     QMenu menu;
     app.setMenu(&menu);
 
@@ -43,12 +48,20 @@ int main(int argc, char *argv[]) {
     return QApplication::exec();
 }
 
+QString homeDir() {
+    struct passwd *pw = getpwuid(getuid());
+    const char *homedir = pw->pw_dir;
+    return {homedir};
+}
+
+QString appDataDir() {
+    return homeDir() + "/.local/share/quickclipboard_test/";
+}
+
 QString pathInAppDataDir(const QString &filename) {
     return appDataDir() + filename;
 }
 
-QString appDataDir() {
-    struct passwd *pw = getpwuid(getuid());
-    const char *homedir = pw->pw_dir;
-    return QString(homedir) + "/.local/share/quickclipboard_test/";
+QString pathInIconsDir(const QString &filename) {
+    return homeDir() + "/.icons/" + filename;
 }
