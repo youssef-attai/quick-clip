@@ -1,1 +1,0 @@
-from res import strings

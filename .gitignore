@@ -1,7 +1,3 @@
+*build*
 .idea
-venv
-*.db
-__pycache__
-*build
-*dist
-*.spec
+
