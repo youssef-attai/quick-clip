@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "meson",
+			"target": "src/com.github.youssef-attai.QuickClip",
+			"mode": "run",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "Meson: Run com.github.youssef-attai.QuickClip"
+		}
+	]
+}
