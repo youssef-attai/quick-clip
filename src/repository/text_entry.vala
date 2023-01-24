@@ -1,5 +1,4 @@
-
-public class TextEntryRepository : Object {
+public class QuickClip.TextEntryRepository : Object {
     public string filename { get; construct; }
 
     public TextEntryRepository(string database_filename) {

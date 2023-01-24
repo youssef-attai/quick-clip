@@ -4,6 +4,8 @@ executable(
     'main.vala',
     'utils.vala',
 
+    'component/app_indicator.vala',
+
     'repository/text_entry.vala',
     
     'model/text_entry.vala',
