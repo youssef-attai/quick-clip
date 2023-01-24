@@ -8,7 +8,7 @@ public class TextEntryRepository : Object {
         );
     }
 
-    private Json.Node readDatabase() {
+    private Json.Node read_database() {
         var parser = new Json.Parser();
 
         Json.Node db;
@@ -24,7 +24,7 @@ public class TextEntryRepository : Object {
         return db;
     }
 
-    private void writeDatabase(ref Json.Node db) {
+    private void write_database(ref Json.Node db) {
         var gen = new Json.Generator();
 
         gen.set_root(db);
@@ -33,7 +33,7 @@ public class TextEntryRepository : Object {
             gen.to_file(filename);
         } catch (Error e) {
             try {
-                GLib.File.new_for_path(appDataDirPath()).make_directory_with_parents(null);
+                GLib.File.new_for_path(get_app_data_dir()).make_directory_with_parents(null);
                 gen.to_file(filename);
             } catch (Error e) {
                 print("Error: %s\n", e.message);
@@ -41,18 +41,18 @@ public class TextEntryRepository : Object {
         }
     }
 
-    public List<TextEntry> getAll() {
-        var db = readDatabase();
-        var allEntries = db.get_array();
+    public List<TextEntry> get_all() {
+        var db = read_database();
+        var all_text_entries = db.get_array();
 
         var results = new List<TextEntry> ();
 
         uint i = 0;
-        foreach (unowned Json.Node entry in allEntries.get_elements()) {
+        foreach (unowned Json.Node entry in all_text_entries.get_elements()) {
             var obj = entry.get_object();
             var key = obj.get_members().nth_data(0);
-            var textEntry = new TextEntry(key, obj.get_string_member(key));
-            results.append(textEntry);
+            var text_entry = new TextEntry(key, obj.get_string_member(key));
+            results.append(text_entry);
             i++;
         }
 
@@ -60,30 +60,30 @@ public class TextEntryRepository : Object {
     }
 
     public void add(TextEntry entry) {
-        var db = readDatabase();
-        var allEntries = db.get_array();
+        var db = read_database();
+        var all_entries = db.get_array();
 
         var new_obj = new Json.Object();
         new_obj.set_string_member(entry.title, entry.text);
 
-        allEntries.add_object_element(new_obj);
+        all_entries.add_object_element(new_obj);
 
-        writeDatabase(ref db);
+        write_database(ref db);
     }
 
     public void remove(string title) {
-        var db = readDatabase();
-        var allEntries = db.get_array();
+        var db = read_database();
+        var all_entries = db.get_array();
 
         uint i = 0;
-        foreach (unowned Json.Node? entry in allEntries.get_elements()) {
+        foreach (unowned Json.Node? entry in all_entries.get_elements()) {
             if (entry.get_object().get_members().nth_data(0) == title) {
-                allEntries.remove_element(i);
+                all_entries.remove_element(i);
                 break;
             }
             i++;
         }
 
-        writeDatabase(ref db);
+        write_database(ref db);
     }
 }
