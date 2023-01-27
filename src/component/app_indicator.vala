@@ -1,4 +1,4 @@
-public class QuickClip.Indicator {
+public class QuickClip.Indicator : Object {
     private AppIndicator.Indicator indicator;
     private Gtk.Menu menu;
     private QuickClip.TextEntryRepository repo;
@@ -16,20 +16,21 @@ public class QuickClip.Indicator {
     }
 
     public void reload_menu_items() {
+        // Remove all menu items
         menu.hide();
-
         menu.foreach((menu_item) => {
             menu.remove(menu_item);
         });
 
+        // Add a menu item for each text entry
         foreach (TextEntry text_entry in repo.get_all()) {
             var menu_item = new Gtk.MenuItem.with_label(text_entry.title);
             menu_item.activate.connect(() => {
+                // Each menu item copies the text associated with it to the clipboard
                 Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).set_text(text_entry.text, -1);
             });
             menu.append(menu_item);
         }
-
         menu.append(new Gtk.SeparatorMenuItem());
 
         // Add the edit text entries menu item
@@ -50,10 +51,12 @@ public class QuickClip.Indicator {
         });
         menu.append(add_new_text_item);
 
+        // Add the quit menu item
         var quit_item = new Gtk.MenuItem.with_label("Quit");
         quit_item.activate.connect(Gtk.main_quit);
         menu.append(quit_item);
 
+        // Show menu and all submenus
         menu.show_all();
     }
 }
