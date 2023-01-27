@@ -32,9 +32,23 @@ public class QuickClip.Indicator {
 
         menu.append(new Gtk.SeparatorMenuItem());
 
-        var edit_item = new Gtk.MenuItem.with_label("Edit or delete");
-        edit_item.activate.connect(() => {});
-        menu.append(edit_item);
+        // Add the edit text entries menu item
+        var add_new_text_item = new Gtk.MenuItem.with_label("Add new text");
+        add_new_text_item.activate.connect(() => {
+            var dialog = new NewTextEntry();
+
+            var response = dialog.run();
+            
+            if (response == Gtk.ResponseType.OK) {
+                repo.add(new TextEntry(dialog.title_entry.text, dialog.text_entry.text));
+                reload_menu_items();
+            } else if (response == Gtk.ResponseType.DELETE_EVENT) {
+
+            }
+
+            dialog.destroy();
+        });
+        menu.append(add_new_text_item);
 
         var quit_item = new Gtk.MenuItem.with_label("Quit");
         quit_item.activate.connect(Gtk.main_quit);
