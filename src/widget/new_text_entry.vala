@@ -25,10 +25,7 @@ public class NewTextEntry : Gtk.Dialog {
             }
             return false;
         });
-
-        get_content_area ().add (title_entry);
-        get_content_area ().add (text_entry);
-
+ 
         show_all ();
     }
 }
