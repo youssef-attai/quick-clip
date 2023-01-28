@@ -5,6 +5,8 @@ executable(
     'utils.vala',
 
     'widget/new_text_entry.vala',
+    'widget/edit_or_delete.vala',
+    'widget/list_row.vala',
 
     'component/app_indicator.vala',
 
