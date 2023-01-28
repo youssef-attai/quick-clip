@@ -39,12 +39,11 @@ public class QuickClip.Indicator : Object {
             var dialog = new NewTextEntry();
 
             var response = dialog.run();
-            
+
             if (response == Gtk.ResponseType.OK) {
                 repo.add(new TextEntry(dialog.title_entry.text, dialog.text_entry.text));
                 reload_menu_items();
             } else if (response == Gtk.ResponseType.DELETE_EVENT) {
-
             }
 
             dialog.destroy();
