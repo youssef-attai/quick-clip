@@ -70,6 +70,25 @@ public class QuickClip.TextEntryRepository : Object {
         write_database(ref db);
     }
 
+    public void update(string original_title, string new_title, string new_text) {
+        var db = read_database();
+        var all_entries = db.get_array();
+
+        uint i = 0;
+        foreach (unowned Json.Node? entry in all_entries.get_elements()) {
+            if (entry.get_object().get_members().nth_data(0) == original_title) {
+                entry.get_object().remove_member(original_title);
+                var n = new Json.Node(Json.NodeType.VALUE);
+                n.set_string(new_text);
+                entry.get_object().set_member(new_title, n);
+                break;
+            }
+            i++;
+        }
+
+        write_database(ref db);
+    }
+
     public void remove(string title) {
         var db = read_database();
         var all_entries = db.get_array();
