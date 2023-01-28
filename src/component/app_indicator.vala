@@ -52,6 +52,19 @@ public class QuickClip.Indicator : Object {
         menu.append(add_new_text_item);
 
         // Add the quit menu item
+        var edit_item = new Gtk.MenuItem.with_label("Edit or delete text");
+        edit_item.activate.connect(() => {
+            var dialog = new EditOrDelete(ref repo);
+
+            dialog.run();
+
+            reload_menu_items();
+
+            dialog.destroy();
+        });
+        menu.append(edit_item);
+
+        // Add the quit menu item
         var quit_item = new Gtk.MenuItem.with_label("Quit");
         quit_item.activate.connect(Gtk.main_quit);
         menu.append(quit_item);
